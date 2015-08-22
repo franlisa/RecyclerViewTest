@@ -4,16 +4,20 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.example.recyclerviewtest.adapter_holder.ImageTextAdapter;
+import com.example.recyclerviewtest.adapter_holder.ImageTextAdapter.OnItemClickListener;
+import com.example.recyclerviewtest.adapter_holder.ImageTextAdapter.OnItemLongClickListener;
 import com.example.recyclerviewtest.data.Fruit;
 
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
@@ -34,7 +38,28 @@ public class MainActivity extends ActionBarActivity {
 		//设置布局
 		
 		mImageTextAdapter = new ImageTextAdapter(this, mFruitData);
+		mImageTextAdapter.setOnItemClickLister(new OnItemClickListener(){
+
+			@Override
+			public void onItemClick(View view, int position) {
+				// TODO Auto-generated method stub
+				Log.e("fxj", "you click "+position);
+			}
+			
+		} );
+		mImageTextAdapter.setItemLongClickListener(new OnItemLongClickListener(){
+
+			@Override
+			public void onItemLongClick(View view, int position) {
+				// TODO Auto-generated method stub
+				Log.e("fxj", "long click "+position);
+				
+			}
+			
+		});
 		mRecyclerView.setAdapter(mImageTextAdapter);
+		
+	//	mRecyclerView.add
 		
 		
 	}

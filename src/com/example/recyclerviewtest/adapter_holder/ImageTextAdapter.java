@@ -1,9 +1,11 @@
 package com.example.recyclerviewtest.adapter_holder;
-
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,7 +17,27 @@ import com.example.recyclerviewtest.data.*;
 
 public class ImageTextAdapter extends RecyclerView.Adapter<ImageTextAdapter.ViewHolder> {
 	
-	public static class ViewHolder extends RecyclerView.ViewHolder{
+	private  OnItemClickListener mOnItemClickLister;
+	private  OnItemLongClickListener mItemLongClickListener;
+	
+//	item监听器
+	public interface OnItemClickListener{
+		public void onItemClick(View view, int position);
+	}
+	//item长按监听器
+	public interface OnItemLongClickListener{//因为系统原生的OnLongClickListener没有position 我们再包一层
+		public void onItemLongClick(View view,int position);
+	}
+	
+	public void setItemLongClickListener(OnItemLongClickListener mItemLongClickListener) {
+		this.mItemLongClickListener = mItemLongClickListener;
+    }
+	public void setOnItemClickLister(OnItemClickListener mOnItemClickLister) {
+		this.mOnItemClickLister = mOnItemClickLister;
+	}
+	
+	
+	public  class ViewHolder extends RecyclerView.ViewHolder implements OnClickListener,OnLongClickListener{
 		private ImageView mImageView;
 		private TextView mTextView;
 		//就是对应一项的布局文件中有的控件来定义结构，找到里边的控件
@@ -24,7 +46,24 @@ public class ImageTextAdapter extends RecyclerView.Adapter<ImageTextAdapter.View
 			// TODO Auto-generated constructor stub
 			mImageView  = (ImageView)itemView.findViewById(R.id.image);
 			mTextView = (TextView) itemView.findViewById(R.id.name);
+			itemView.setOnClickListener(this);
+			itemView.setOnLongClickListener(this);
 		}
+		@Override
+		public boolean onLongClick(View v) {
+			// TODO Auto-generated method stub
+		    if(mItemLongClickListener !=null){
+		    	mItemLongClickListener.onItemLongClick(v, getPosition());
+		    }
+			return false;
+		}
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			if(mOnItemClickLister!=null)
+				mOnItemClickLister.onItemClick(v, getPosition());
+			
+		}		
 		
 	}
 	
